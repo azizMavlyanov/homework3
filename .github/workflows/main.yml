@@ -25,8 +25,8 @@ jobs:
         with:
           # TODO set Heroku app name and user email
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name:
-          heroku_email:
+          heroku_app_name: aziz-homework3
+          heroku_email: alex.mavlyanov95@gmail.com
       - name: Checkout test repository
         uses: actions/checkout@v2
         with:
@@ -38,4 +38,4 @@ jobs:
         with:
           build-root-directory: integration-tests
           # TODO set Heroku service url
-          arguments: clean test -PtargetUrl=https://url.herokuapp.com
+          arguments: clean test -PtargetUrl=https://aziz-homework3.herokuapp.com

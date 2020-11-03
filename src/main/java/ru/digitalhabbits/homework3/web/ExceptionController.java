@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.digitalhabbits.homework3.exception.ConflictException;
 import ru.digitalhabbits.homework3.model.ErrorResponse;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,6 +28,16 @@ public class ExceptionController {
     public ErrorResponse error(EntityNotFoundException exception) {
         return new ErrorResponse(exception.getMessage());
     }
+
+    @ApiResponse(responseCode = "409",
+            description = "Conflict occurred",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ConflictException.class)
+    public ErrorResponse conflictError(ConflictException exception) {
+        return new ErrorResponse(exception.getMessage());
+    }
+
 
     @ApiResponse(responseCode = "500",
             description = "Server error",

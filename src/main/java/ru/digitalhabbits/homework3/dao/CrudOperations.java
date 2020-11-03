@@ -7,6 +7,7 @@ import java.util.List;
 
 @NoRepositoryBean
 public interface CrudOperations<T, ID> {
+    T create(T entity);
 
     T findById(@Nonnull ID id);
 

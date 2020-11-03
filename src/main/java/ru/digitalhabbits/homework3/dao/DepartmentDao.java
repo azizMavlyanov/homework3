@@ -5,4 +5,5 @@ import ru.digitalhabbits.homework3.domain.Department;
 
 @NoRepositoryBean
 public interface DepartmentDao
-        extends CrudOperations<Department, Integer> {}
+        extends CrudOperations<Department, Integer> {
+}
