@@ -27,14 +27,10 @@ public class PersonServiceImpl
     @Transactional(readOnly = true)
     public List<PersonResponse> findAllPersons() {
         // NotImplemented: получение информации о всех людях во всех отделах
-        try {
-            return personDao.findAll()
-                    .stream()
-                    .map(PersonServiceImpl::buildPersonResponse)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return personDao.findAll()
+                .stream()
+                .map(PersonServiceImpl::buildPersonResponse)
+                .collect(Collectors.toList());
     }
 
     @Nonnull
@@ -42,19 +38,13 @@ public class PersonServiceImpl
     @Transactional(readOnly = true)
     public PersonResponse getPerson(@Nonnull Integer id) {
         // NotImplemented: получение информации о человеке. Если не найдено, отдавать 404:NotFound
-        try {
-            Person person = personDao.findById(id);
+        Person person = personDao.findById(id);
 
-            if (person != null) {
-                return PersonServiceImpl.buildPersonResponse(person);
-            }
-
-            throw new EntityNotFoundException("Resource not found in the system");
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException(e.getMessage());
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        if (person != null) {
+            return PersonServiceImpl.buildPersonResponse(person);
         }
+
+        throw new EntityNotFoundException("Resource not found in the system");
     }
 
     @Nonnull
@@ -67,11 +57,8 @@ public class PersonServiceImpl
                 .setLastName(request.getLastName())
                 .setMiddleName(request.getMiddleName())
                 .setAge(request.getAge());
-        try {
-            return personDao.create(person).getId();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+
+        return personDao.create(person).getId();
     }
 
     @Nonnull
@@ -79,45 +66,32 @@ public class PersonServiceImpl
     @Transactional
     public PersonResponse updatePerson(@Nonnull Integer id, @Nonnull PersonRequest request) {
         // NotImplemented: обновление информации о человеке. Если не найдено, отдавать 404:NotFound
-        try {
-            Person person = personDao.findById(id);
+        Person person = personDao.findById(id);
 
-            if (person == null) {
-                throw new EntityNotFoundException("Resource not found in the system");
-            }
-
-            person
-                    .setFirstName(request.getFirstName())
-                    .setLastName(request.getLastName())
-                    .setMiddleName(request.getMiddleName())
-                    .setAge(request.getAge());
-
-            Person updatedPerson = personDao.update(person);
-
-            return PersonServiceImpl.buildPersonResponse(updatedPerson);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException(e.getMessage());
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        if (person == null) {
+            throw new EntityNotFoundException("Resource not found in the system");
         }
 
+        person
+                .setFirstName(request.getFirstName())
+                .setLastName(request.getLastName())
+                .setMiddleName(request.getMiddleName())
+                .setAge(request.getAge());
 
+        Person updatedPerson = personDao.update(person);
+
+        return PersonServiceImpl.buildPersonResponse(updatedPerson);
     }
 
     @Override
     @Transactional
     public void deletePerson(@Nonnull Integer id) {
         // NotImplemented: удаление информации о человеке и удаление его из отдела. Если не найдено, ничего не делать
-        try {
-            Person person = personDao.findById(id);
+        Person person = personDao.findById(id);
 
-            if (person != null) {
-                personDao.delete(person.getId());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        if (person != null) {
+            personDao.delete(person.getId());
         }
-
     }
 
     public static PersonInfo buildPersonInfo(Person person) {
